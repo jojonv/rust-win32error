@@ -33,3 +33,4 @@ fn win32error_new_test_real_error_code()
     let err = Win32Error::new();
     assert_eq!(5, err.get_error_code());
 }
+
