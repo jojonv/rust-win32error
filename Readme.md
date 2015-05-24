@@ -15,7 +15,7 @@ kernel32-sys = "*"
 rust_win32error = "0.7.0"
 ```
 
-example.rs
+main.rs
 ``` Rust
 extern crate kernel32;
 extern crate rust_win32error;
@@ -25,8 +25,7 @@ use kernel32::OpenProcess;
 // needs to be brought so `description` function can be used
 use std::error::Error;
 
-fn main()
-{
+fn main() {
     func();
 }
 
