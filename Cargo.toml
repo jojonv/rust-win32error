@@ -2,6 +2,11 @@
 name = "rust_win32error"
 version = "0.7.0"
 authors = ["jojonv <novakj@outlook.com>"]
+license = "Apache-2.0"
+keywords = ["winapi", "windows", "win32error"]
+repository = "https://github.com/jojonv/rust-win32error.git"
+homepage = "https://github.com/jojonv/rust-win32error.git"
+description = "Error like wrapper for GetLastError for Windows"
 
 [dependencies]
 winapi = "*"
