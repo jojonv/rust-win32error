@@ -1,0 +1,9 @@
+[package]
+name = "rust_win32error"
+version = "0.1.0"
+authors = ["jojonv <novakj@outlook.com>"]
+
+[dependencies]
+winapi = "*"
+user32-sys = "*"
+kernel32-sys = "*"
