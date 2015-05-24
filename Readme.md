@@ -22,6 +22,8 @@ extern crate rust_win32error;
 
 use rust_win32error::*;
 use kernel32::OpenProcess;
+// needs to be brought so `description` function can be used
+use std::error::Error;
 
 fn main()
 {
@@ -34,7 +36,14 @@ fn func() {
     let err = Win32Error::new();
     println!("{}", err); // => 5: Access is denied (or localized):
 
-    let err = Win32Error::from(6); // => 6: Handle is invalid(or localized):
+    let err = Win32Error::from(6); // => 6: Handle is invalid (or localized):
     println!("{}", err);
+
+    println!("{}", err.description()); // => Handle is invalid (or localized)
+    println!("Error code is {}", err.get_error_code()); // => Error code is 6
+
+    // pass some crazy error
+    let err = Win32Error::from(885848);
+    println!("{}", err); // => 885848: Unknown error
 }
 ```
