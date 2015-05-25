@@ -21,6 +21,8 @@ const FORMAT_MESSAGE_ARGUMENT_ARRAY: u32 = 0x00002000;
 const UNKNOWN_ERROR_TEXT: &'static str = "Unknown error";
 
 
+pub type Win32Result<T> = Result<T, Win32Error>;
+
 #[derive(Debug, Clone)]
 pub struct Win32Error
 {
