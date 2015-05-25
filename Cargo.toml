@@ -9,6 +9,4 @@ homepage = "https://github.com/jojonv/rust-win32error.git"
 description = "Error like wrapper for GetLastError for Windows"
 
 [dependencies]
-winapi = "*"
-user32-sys = "*"
 kernel32-sys = "*"

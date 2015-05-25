@@ -1,8 +1,6 @@
 
 //! Error-like wrapper around win32 GetLastError and FormatMessage
-extern crate winapi;
 extern crate kernel32;
-extern crate user32;
 
 use std::ptr;
 use std::slice;
