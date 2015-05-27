@@ -6,6 +6,7 @@ use std::ptr;
 use std::slice;
 use std::fmt;
 use std::error::Error;
+use std::marker;
 
 use self::kernel32::{ GetLastError, FormatMessageW};
 
@@ -117,6 +118,12 @@ macro_rules! impl_into_trait
 
 impl_from_trait!(i32, i16, i8, u32, u16, u8);
 impl_into_trait!(i32, i16, i8, u32, u16, u8);
+
+// Type is immutable
+//
+unsafe impl Sync for Win32Error {}
+
+unsafe impl Send for Win32Error {}
 
 impl fmt::Display for Win32Error
 {
