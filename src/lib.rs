@@ -86,7 +86,7 @@ fn init_from_error_code(errno: u32) -> Win32Error
 
 macro_rules! impl_from_trait
 {
-    ($($t:ty), *) =>
+    ($($t:ty), +) =>
     {
         $(
             impl From<$t> for Win32Error
@@ -96,13 +96,13 @@ macro_rules! impl_from_trait
                     init_from_error_code(errno as u32)
                 }
             }
-        )*
+        )+
     };
 }
 
 macro_rules! impl_into_trait
 {
-    ($($t:ty), *) =>
+    ($($t:ty), +) =>
     {
         $(
             impl Into<$t> for Win32Error
@@ -112,7 +112,7 @@ macro_rules! impl_into_trait
                     self.error_code as $t
                 }
             }
-        )*
+        )+
     };
 }
 
