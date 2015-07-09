@@ -1,8 +1,6 @@
 
 //! Error-like wrapper around win32 GetLastError and FormatMessage
-extern crate winapi;
 extern crate kernel32;
-extern crate user32;
 
 use std::ptr;
 use std::slice;
@@ -12,14 +10,16 @@ use std::error::Error;
 use self::kernel32::{ GetLastError, FormatMessageW};
 
 
-const FORMAT_MESSAGE_FROM_STRING: u32 = 0x00000400;
-const FORMAT_MESSAGE_ALLOCATE_BUFFER: u32 = 0x00000100;
+// const FORMAT_MESSAGE_FROM_STRING: u32 = 0x00000400;
+// const FORMAT_MESSAGE_ALLOCATE_BUFFER: u32 = 0x00000100;
 const FORMAT_MESSAGE_IGNORE_INSERTS: u32 = 0x00000200;
 const FORMAT_MESSAGE_FROM_SYSTEM: u32 = 0x00001000;
 const FORMAT_MESSAGE_ARGUMENT_ARRAY: u32 = 0x00002000;
 
 const UNKNOWN_ERROR_TEXT: &'static str = "Unknown error";
 
+
+pub type Win32Result<T> = Result<T, Win32Error>;
 
 #[derive(Debug, Clone)]
 pub struct Win32Error
@@ -32,16 +32,24 @@ pub struct Win32Error
     description: Option<String>,
 }
 
+fn init_vector<'a, T: Default>(vec: &'a mut Vec<T>)
+{
+    let mut x = 0;
+    while x < vec.capacity()
+    {
+        vec.push(T::default());
+        x += 1;
+    }
+}
+
 fn init_from_error_code(errno: u32) -> Win32Error
 {
     unsafe
     {
         let buff_size = 256;
         let mut buff: Vec<u16> = Vec::with_capacity(buff_size);
-        for x in 0 .. buff_size
-        {
-            buff.push(0);
-        }
+
+        init_vector(&mut buff);
 
         // Should be zero or num of chars copied
         //
@@ -85,7 +93,7 @@ fn init_from_error_code(errno: u32) -> Win32Error
 
 macro_rules! impl_from_trait
 {
-    ($($t:ty), *) =>
+    ($($t:ty), +) =>
     {
         $(
             impl From<$t> for Win32Error
@@ -95,13 +103,13 @@ macro_rules! impl_from_trait
                     init_from_error_code(errno as u32)
                 }
             }
-        )*
+        )+
     };
 }
 
 macro_rules! impl_into_trait
 {
-    ($($t:ty), *) =>
+    ($($t:ty), +) =>
     {
         $(
             impl Into<$t> for Win32Error
@@ -111,12 +119,18 @@ macro_rules! impl_into_trait
                     self.error_code as $t
                 }
             }
-        )*
+        )+
     };
 }
 
 impl_from_trait!(i32, i16, i8, u32, u16, u8);
 impl_into_trait!(i32, i16, i8, u32, u16, u8);
+
+// Type is immutable
+//
+unsafe impl Sync for Win32Error {}
+
+unsafe impl Send for Win32Error {}
 
 impl fmt::Display for Win32Error
 {
@@ -219,4 +233,3 @@ mod test
         assert_eq!(err.description(), UNKNOWN_ERROR_TEXT);
     }
 }
-
