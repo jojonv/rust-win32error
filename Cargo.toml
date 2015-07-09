@@ -1,6 +1,6 @@
 [package]
 name = "rust_win32error"
-version = "0.7.0"
+version = "0.8.0"
 authors = ["jojonv <novakj@outlook.com>"]
 license = "Apache-2.0"
 keywords = ["winapi", "windows", "win32error", "ffi"]

@@ -6,13 +6,12 @@ use std::ptr;
 use std::slice;
 use std::fmt;
 use std::error::Error;
-use std::marker;
 
 use self::kernel32::{ GetLastError, FormatMessageW};
 
 
-const FORMAT_MESSAGE_FROM_STRING: u32 = 0x00000400;
-const FORMAT_MESSAGE_ALLOCATE_BUFFER: u32 = 0x00000100;
+// const FORMAT_MESSAGE_FROM_STRING: u32 = 0x00000400;
+// const FORMAT_MESSAGE_ALLOCATE_BUFFER: u32 = 0x00000100;
 const FORMAT_MESSAGE_IGNORE_INSERTS: u32 = 0x00000200;
 const FORMAT_MESSAGE_FROM_SYSTEM: u32 = 0x00001000;
 const FORMAT_MESSAGE_ARGUMENT_ARRAY: u32 = 0x00002000;
@@ -33,16 +32,24 @@ pub struct Win32Error
     description: Option<String>,
 }
 
+fn init_vector<'a, T: Default>(vec: &'a mut Vec<T>)
+{
+    let mut x = 0;
+    while x < vec.capacity()
+    {
+        vec.push(T::default());
+        x += 1;
+    }
+}
+
 fn init_from_error_code(errno: u32) -> Win32Error
 {
     unsafe
     {
         let buff_size = 256;
         let mut buff: Vec<u16> = Vec::with_capacity(buff_size);
-        for x in 0 .. buff_size
-        {
-            buff.push(0);
-        }
+
+        init_vector(&mut buff);
 
         // Should be zero or num of chars copied
         //
@@ -226,4 +233,3 @@ mod test
         assert_eq!(err.description(), UNKNOWN_ERROR_TEXT);
     }
 }
-
