@@ -9,10 +9,7 @@ cargo.toml
 ``` Rust
 ...
 [dependencies]
-winapi = "*"
-user32-sys = "*"
 kernel32-sys = "*"
-rust_win32error = "0.7.0"
 ```
 
 main.rs
@@ -31,7 +28,7 @@ fn main() {
 
 fn func() {
     let process_terminate = 0x0001;
-    let h = unsafe { OpenProcess(process_terminate, 0, 4) };
+    let h = unsafe { OpenProcess(process_terminate, 0, 4) }; 
     let err = Win32Error::new();
     println!("{}", err); // => 5: Access is denied (or localized):
 
@@ -44,5 +41,10 @@ fn func() {
     // pass some crazy error
     let err = Win32Error::from(885848);
     println!("{}", err); // => 885848: Unknown error
+}
+
+fn get_result_ok() -> Win32Result<u32>
+{
+    Err(Win32Error::new())
 }
 ```
