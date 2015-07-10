@@ -10,3 +10,5 @@ script:
     - cargo build --verbose
     - cargo test --verbose
     - cargo doc --verbose
+
+after_success: curl https://raw.githubusercontent.com/jojonv/travis-doc-upload/master/travis-doc-upload.sh | sh
