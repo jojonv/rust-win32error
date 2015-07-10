@@ -6,10 +6,23 @@ Error like wrapper for GetLastError for Rust.
 
 
 cargo.toml
+
+**0.8.0**
 ``` Rust
 ...
 [dependencies]
 kernel32-sys = "*"
+rust-win32error = "0.8.0"
+```
+
+**0.7.0**
+``` Rust
+...
+[dependencies]
+winapi = "*"
+user32-sys = "*"
+kernel32-sys = "*"
+rust_win32error = "0.7.0"
 ```
 
 main.rs
@@ -43,8 +56,8 @@ fn func() {
     println!("{}", err); // => 885848: Unknown error
 }
 
-fn get_result_ok() -> Win32Result<u32>
-{
+// From 0.8.0 and above
+fn get_result_ok() -> Win32Result<u32> {
     Err(Win32Error::new())
 }
 ```
