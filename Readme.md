@@ -15,16 +15,6 @@ kernel32-sys = "*"
 rust-win32error = "0.8.0"
 ```
 
-**0.7.0**
-``` Rust
-...
-[dependencies]
-winapi = "*"
-user32-sys = "*"
-kernel32-sys = "*"
-rust_win32error = "0.7.0"
-```
-
 main.rs
 ``` Rust
 extern crate kernel32;
